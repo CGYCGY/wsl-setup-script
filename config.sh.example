@@ -44,7 +44,8 @@ FSTAB_MOUNTS=(
 
 # VHDX mount configuration
 # IMPORTANT: Update this to your actual VHDX file location!
-VHDX_PATH="D:\WSL\your-vhdx-name.vhdx"
+# NOTE: Use single quotes for Windows paths to prevent backslash escaping
+VHDX_PATH='D:\WSL\your-vhdx-name.vhdx'
 VHDX_MOUNT_NAME="__data"
 
 # Mount point configuration
