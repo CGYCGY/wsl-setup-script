@@ -149,24 +149,44 @@ main() {
     confirm_action "This script will install packages and configure your WSL environment."
 
     # Step 1: Install packages
-    print_step 1 3 "Installing Packages"
+    print_step 1 4 "Installing Packages"
     if ! run_script "scripts/install-packages.sh"; then
         log_error "Package installation failed"
         exit 1
     fi
 
     # Step 2: Configure mount
-    print_step 2 3 "Configuring Mount Settings"
+    print_step 2 4 "Configuring Mount Settings"
     if ! run_script "scripts/configure-mount.sh"; then
         log_error "Mount configuration failed"
         exit 1
     fi
 
     # Step 3: Setup dotfiles
-    print_step 3 3 "Setting Up Dotfiles"
+    print_step 3 4 "Setting Up Dotfiles"
     if ! run_script "scripts/setup-dotfiles.sh"; then
         log_error "Dotfiles setup failed"
         exit 1
+    fi
+
+    # Step 4: Setup Docker credentials (optional)
+    echo ""
+    echo -e "${COLOR_YELLOW}Optional: Configure Docker credential storage with GPG${COLOR_RESET}"
+    echo "This will securely store your Docker credentials and eliminate the warning about"
+    echo "storing passwords unencrypted in config.json."
+    echo ""
+    read -p "Do you want to setup Docker credentials now? (y/N): " -n 1 -r
+    echo ""
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        print_step 4 4 "Setting Up Docker Credentials"
+        if ! run_script "scripts/setup-docker-credentials.sh"; then
+            log_warn "Docker credentials setup skipped or failed"
+            log_info "You can run it later with: make setup-docker-credentials"
+        fi
+    else
+        log_info "Docker credentials setup skipped"
+        log_info "You can run it later with: make setup-docker-credentials"
     fi
 
     # Print completion message
