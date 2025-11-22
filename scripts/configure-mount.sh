@@ -138,10 +138,15 @@ configure_mount_script() {
 
     # Copy and substitute variables from config.sh
     log_info "Substituting configuration values..."
-    sed -e "s|{{VHDX_PATH}}|${VHDX_PATH}|g" \
+
+    # Escape backslashes for sed replacement (prevent sed from interpreting them)
+    local ESCAPED_VHDX_PATH="${VHDX_PATH//\\/\\\\}"
+    local ESCAPED_WSL_EXE_PATH="${WSL_EXE_PATH//\\/\\\\}"
+
+    sed -e "s|{{VHDX_PATH}}|${ESCAPED_VHDX_PATH}|g" \
         -e "s|{{VHDX_MOUNT_NAME}}|${VHDX_MOUNT_NAME}|g" \
         -e "s|{{CUSTOM_MOUNT_POINT}}|${CUSTOM_MOUNT_POINT}|g" \
-        -e "s|{{WSL_EXE_PATH}}|${WSL_EXE_PATH}|g" \
+        -e "s|{{WSL_EXE_PATH}}|${ESCAPED_WSL_EXE_PATH}|g" \
         "${src}" > "${dest}"
 
     # Make executable
