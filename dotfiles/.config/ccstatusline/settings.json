@@ -1,0 +1,101 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "3",
+        "type": "context-length",
+        "color": "brightBlack"
+      },
+      {
+        "id": "194c3f2a-df6b-4c0b-ada1-4cdc9a52cac8",
+        "type": "separator",
+        "character": " "
+      },
+      {
+        "id": "ba06ba9a-240d-4d6c-a18e-8f15cd8f48b4",
+        "type": "context-percentage",
+        "rawValue": true
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "5",
+        "type": "tokens-total",
+        "color": "magenta",
+        "rawValue": true
+      },
+      {
+        "id": "e8b413d4-6758-4480-9484-0fd84aa0b79e",
+        "type": "separator",
+        "character": "-"
+      },
+      {
+        "id": "75ee4cf1-f549-4a83-b6fe-367a27b82f6f",
+        "type": "tokens-input",
+        "rawValue": true
+      },
+      {
+        "id": "fc95a86a-0760-4375-aa8c-a1a4fab6c58f",
+        "type": "separator",
+        "character": ","
+      },
+      {
+        "id": "2b54d39e-c532-4dfc-bfba-faca601a29d9",
+        "type": "tokens-output",
+        "rawValue": true
+      },
+      {
+        "id": "be666558-c7ab-4559-af05-02571a0d5eac",
+        "type": "separator",
+        "character": ","
+      },
+      {
+        "id": "58dd5b75-a8bf-456b-8ea0-6c4c892b4ad7",
+        "type": "tokens-cached",
+        "rawValue": true
+      },
+      {
+        "id": "6",
+        "type": "flex-separator"
+      },
+      {
+        "id": "7",
+        "type": "block-timer",
+        "color": "yellow",
+        "rawValue": true
+      }
+    ],
+    [],
+    []
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 2,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false
+  }
+}

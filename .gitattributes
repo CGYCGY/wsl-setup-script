@@ -1,0 +1,50 @@
+* text=auto
+
+# Shell scripts
+*.sh text eol=lf
+
+# Config files
+fstab text eol=lf
+wsl.conf text eol=lf
+
+# Documentation files
+*.md text eol=lf
+README* text eol=lf
+
+# Config files
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+
+# JSON files
+*.json text eol=lf
+
+# YAML files (if any)
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Example/template files
+*.example text eol=lf
+
+# SSH config (if committed)
+dotfiles/.ssh/config text eol=lf
+
+# Denote binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.tgz binary
+
+# Export ignore (files not included in git archive)
+.gitattributes export-ignore
+.gitignore export-ignore
+.editorconfig export-ignore
+.idea/ export-ignore
+.vscode/ export-ignore
+*.log export-ignore

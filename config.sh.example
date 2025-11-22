@@ -1,0 +1,156 @@
+#!/bin/bash
+
+# WSL Setup Configuration
+# Copy this file to config.sh and edit the variables to match your setup
+#
+# USAGE:
+#   cp config.sh.example config.sh
+#   nano config.sh
+
+#############################################
+# PATHS - Edit these to match your setup
+#############################################
+
+# Where this script directory is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# User configuration
+# IMPORTANT: Change this to your WSL username!
+TARGET_USER="yourusername"
+TARGET_HOME="/home/${TARGET_USER}"
+
+# Source directories (where setup files are located)
+FILES_DIR="${SCRIPT_DIR}/files"
+DOTFILES_DIR="${SCRIPT_DIR}/dotfiles"
+
+# Installation paths
+CHROME_INSTALL_PATH="${TARGET_HOME}/chrome"
+NVM_DIR="${TARGET_HOME}/.nvm"
+BUN_INSTALL="${TARGET_HOME}/.bun"
+
+# Docker configuration
+DOCKER_GROUP="docker"
+
+# VHDX mount configuration
+# IMPORTANT: Update this to your actual VHDX file location!
+VHDX_PATH="D:\WSL\your-vhdx-name.vhdx"
+VHDX_MOUNT_NAME="__data"
+
+#############################################
+# BACKUP CONFIGURATION
+#############################################
+
+# Backup suffix for existing files
+BACKUP_SUFFIX=".backup.$(date +%Y%m%d_%H%M%S)"
+
+# Enable backups (set to "false" to disable)
+ENABLE_BACKUPS="true"
+
+#############################################
+# PACKAGE LISTS
+#############################################
+
+# System packages
+SYSTEM_PACKAGES=(
+    ca-certificates
+    curl
+    gnupg
+    lsb-release
+    git
+    unzip
+    man-db
+)
+
+# Chrome dependencies for headless testing
+CHROME_DEPENDENCIES=(
+    libnspr4
+    libnss3
+    libatk1.0-0
+    libatk-bridge2.0-0
+    libcups2
+    libxkbcommon0
+    libxcomposite1
+    libxdamage1
+    libxfixes3
+    libxrandr2
+    libgbm1
+    libcairo2
+    libpango-1.0-0
+    libasound2
+)
+
+# Docker packages
+DOCKER_PACKAGES=(
+    docker-ce
+    docker-ce-cli
+    containerd.io
+    docker-buildx-plugin
+    docker-compose-plugin
+)
+
+#############################################
+# URLS AND VERSIONS
+#############################################
+
+# Tailscale install script
+TAILSCALE_INSTALL_URL="https://tailscale.com/install.sh"
+
+# NVM version and install script
+NVM_VERSION="v0.39.7"
+NVM_INSTALL_URL="https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh"
+
+# Bun install script
+BUN_INSTALL_URL="https://bun.sh/install"
+
+# Claude Code install script
+CLAUDE_CODE_INSTALL_URL="https://claude.ai/install.sh"
+
+#############################################
+# LOGGING
+#############################################
+
+# Log file location
+LOG_FILE="${SCRIPT_DIR}/setup.log"
+
+# Log levels (set to 1 to enable, 0 to disable)
+LOG_DEBUG=0
+LOG_INFO=1
+LOG_WARN=1
+LOG_ERROR=1
+
+#############################################
+# COLORS (for terminal output)
+#############################################
+
+COLOR_RESET='\033[0m'
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[0;32m'
+COLOR_YELLOW='\033[0;33m'
+COLOR_BLUE='\033[0;34m'
+COLOR_CYAN='\033[0;36m'
+COLOR_BOLD='\033[1m'
+
+#############################################
+# DO NOT EDIT BELOW THIS LINE
+#############################################
+
+# Detect Linux distribution
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    DISTRO_ID="${ID}"
+    DISTRO_VERSION_CODENAME="${VERSION_CODENAME}"
+else
+    echo "ERROR: Cannot detect Linux distribution"
+    exit 1
+fi
+
+# Export all variables for child scripts
+export SCRIPT_DIR TARGET_USER TARGET_HOME
+export FILES_DIR DOTFILES_DIR
+export CHROME_INSTALL_PATH NVM_DIR BUN_INSTALL
+export DOCKER_GROUP BACKUP_SUFFIX ENABLE_BACKUPS
+export VHDX_PATH VHDX_MOUNT_NAME
+export LOG_FILE LOG_DEBUG LOG_INFO LOG_WARN LOG_ERROR
+export COLOR_RESET COLOR_RED COLOR_GREEN COLOR_YELLOW COLOR_BLUE COLOR_CYAN COLOR_BOLD
+export DISTRO_ID DISTRO_VERSION_CODENAME
+export TAILSCALE_INSTALL_URL NVM_VERSION NVM_INSTALL_URL BUN_INSTALL_URL CLAUDE_CODE_INSTALL_URL

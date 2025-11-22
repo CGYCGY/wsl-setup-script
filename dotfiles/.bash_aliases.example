@@ -1,0 +1,16 @@
+# Bash Aliases Example
+# Copy this file to .bash_aliases and customize for your environment
+#
+# USAGE:
+#   cp .bash_aliases.example .bash_aliases
+#   nano .bash_aliases
+
+# Docker shortcuts
+alias dc='docker compose'
+
+# Claude Code
+alias cc='claude'
+
+# Change to project directory
+# Update this path to your actual project location
+alias cdp='cd /mnt/__data/project'
