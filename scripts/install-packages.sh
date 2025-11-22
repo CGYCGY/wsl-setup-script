@@ -70,7 +70,7 @@ install_tailscale() {
 #############################################
 
 install_docker() {
-    if command_exists docker; then
+    if dpkg -l | grep -q "^ii  docker-ce "; then
         log_warn "Docker already installed, skipping..."
         return 0
     fi
