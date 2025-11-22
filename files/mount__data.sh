@@ -4,17 +4,18 @@
 # These values are substituted from config.sh during setup
 VHDX_PATH="{{VHDX_PATH}}"
 MOUNT_NAME="{{VHDX_MOUNT_NAME}}"
-CUSTOM_MOUNT_POINT="/mnt/$MOUNT_NAME"
+CUSTOM_MOUNT_POINT="{{CUSTOM_MOUNT_POINT}}"
 WSL_MOUNT_POINT="/mnt/wsl/$MOUNT_NAME"
+WSL_EXE="{{WSL_EXE_PATH}}"
 
 # --- Attachment/Mounting Logic ---
 
 # 1. Try to unmount first for a clean start. Output redirected to /dev/null
-/mnt/c/Windows/System32/wsl.exe --unmount "\\\\?\\$VHDX_PATH" 2>/dev/null
+"$WSL_EXE" --unmount "\\\\?\\$VHDX_PATH" 2>/dev/null
 
 # 2. Re-attach and auto-mount the VHDX. All output (stdout & stderr) redirected to /dev/null
 # The '2>&1' redirects stderr to stdout, and '>/dev/null' redirects stdout to null.
-/mnt/c/Windows/System32/wsl.exe --mount --vhd "$VHDX_PATH" --partition 1 --name $MOUNT_NAME >/dev/null 2>&1
+"$WSL_EXE" --mount --vhd "$VHDX_PATH" --partition 1 --name $MOUNT_NAME >/dev/null 2>&1
 
 # --- Verification and Custom Message ---
 
