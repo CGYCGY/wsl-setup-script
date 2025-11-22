@@ -38,7 +38,7 @@ print_banner() {
     echo "║                                                ║"
     echo "║           WSL Setup Script v1.0                ║"
     echo "║                                                ║"
-    echo "║  Automated setup for Debian/Ubuntu on WSL     ║"
+    echo "║  Automated setup for Debian/Ubuntu on WSL      ║"
     echo "║                                                ║"
     echo "╚════════════════════════════════════════════════╝"
     echo -e "${COLOR_RESET}"
