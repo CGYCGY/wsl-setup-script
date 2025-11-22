@@ -175,6 +175,20 @@ NVM_DIR="${TARGET_HOME}/.nvm"                # Node Version Manager
 BUN_INSTALL="${TARGET_HOME}/.bun"            # Bun runtime
 ```
 
+#### VHDX Mount Configuration
+```bash
+# IMPORTANT: Use single quotes for Windows paths to prevent backslash escaping
+VHDX_PATH='D:\WSL\your-vhdx-name.vhdx'  # Windows path to VHDX file
+VHDX_MOUNT_NAME="__data"                 # Mount name
+CUSTOM_MOUNT_POINT="/mnt/${VHDX_MOUNT_NAME}"  # Linux mount point
+```
+
+**WARNING**: When setting `VHDX_PATH`, you MUST use single quotes (`'...'`) instead of double quotes (`"..."`). This prevents bash from interpreting backslashes as escape characters.
+
+**Example**:
+- ✅ Correct: `VHDX_PATH='D:\WSL\__data\project.vhdx'`
+- ❌ Wrong: `VHDX_PATH="D:\WSL\__data\project.vhdx"` (backslashes will be removed)
+
 #### Backup Settings
 ```bash
 ENABLE_BACKUPS="true"          # Create backups before overwriting
@@ -310,6 +324,16 @@ Check the mount script configuration in `files/mount__data.sh`:
 - Verify VHDX path is correct
 - Ensure VHDX file exists
 - Check Windows disk path is accessible
+
+**Common Issue**: If your VHDX path has backslashes stripped (e.g., `D:\WSL\__data\project.vhdx` becomes `D:WSL__dataproject.vhdx`), this means you used double quotes instead of single quotes in `config.sh`. Fix it by changing:
+```bash
+# Change this:
+VHDX_PATH="D:\WSL\__data\project.vhdx"
+
+# To this:
+VHDX_PATH='D:\WSL\__data\project.vhdx'
+```
+Then re-run `./scripts/configure-mount.sh` and restart WSL.
 
 ### Chrome for Testing Issues
 
