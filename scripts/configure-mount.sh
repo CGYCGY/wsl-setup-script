@@ -80,9 +80,13 @@ configure_wsl_conf() {
         backup_file "${dest}"
     fi
 
-    copy_file "${src}" "${dest}" "true"
+    # Substitute configuration values
+    log_info "Substituting configuration values..."
+    sed -e "s|{{MOUNT_SCRIPT_PATH}}|${MOUNT_SCRIPT_PATH}|g" \
+        -e "s|{{WSL_AUTOMOUNT_ENABLED}}|${WSL_AUTOMOUNT_ENABLED}|g" \
+        "${src}" | sudo tee "${dest}" >/dev/null
 
-    log_success "wsl.conf configured"
+    log_success "wsl.conf configured (automount=${WSL_AUTOMOUNT_ENABLED})"
     log_warn "You need to restart WSL for changes to take effect: wsl.exe --shutdown"
 }
 
@@ -91,8 +95,13 @@ configure_wsl_conf() {
 #############################################
 
 configure_fstab() {
-    local src="${FILES_DIR}/fstab"
     local dest="/etc/fstab"
+
+    # Only configure fstab if automount is disabled
+    if [ "${WSL_AUTOMOUNT_ENABLED}" = "true" ]; then
+        log_info "Automount is enabled, skipping fstab configuration..."
+        return 0
+    fi
 
     log_info "Configuring /etc/fstab..."
 
@@ -101,9 +110,15 @@ configure_fstab() {
         backup_file "${dest}"
     fi
 
-    copy_file "${src}" "${dest}" "true"
+    # Generate fstab from configured mounts
+    log_info "Generating fstab from configuration..."
+    {
+        for mount in "${FSTAB_MOUNTS[@]}"; do
+            echo "${mount}"
+        done
+    } | sudo tee "${dest}" >/dev/null
 
-    log_success "fstab configured"
+    log_success "fstab configured with ${#FSTAB_MOUNTS[@]} mount(s)"
 }
 
 #############################################
@@ -111,8 +126,8 @@ configure_fstab() {
 #############################################
 
 configure_mount_script() {
-    local src="${FILES_DIR}/mount__data.sh"
-    local dest="${TARGET_HOME}/mount__data.sh"
+    local src="${FILES_DIR}/${MOUNT_SCRIPT_NAME}"
+    local dest="${MOUNT_SCRIPT_PATH}"
 
     log_info "Configuring mount script..."
 
@@ -125,6 +140,8 @@ configure_mount_script() {
     log_info "Substituting configuration values..."
     sed -e "s|{{VHDX_PATH}}|${VHDX_PATH}|g" \
         -e "s|{{VHDX_MOUNT_NAME}}|${VHDX_MOUNT_NAME}|g" \
+        -e "s|{{CUSTOM_MOUNT_POINT}}|${CUSTOM_MOUNT_POINT}|g" \
+        -e "s|{{WSL_EXE_PATH}}|${WSL_EXE_PATH}|g" \
         "${src}" > "${dest}"
 
     # Make executable
@@ -144,13 +161,13 @@ configure_sudo_nopasswd() {
     log_info "Configuring sudo without password for mount script..."
 
     # Check if already configured
-    if sudo grep -q "${TARGET_USER}.*mount__data.sh" /etc/sudoers.d/* 2>/dev/null; then
+    if sudo grep -q "${TARGET_USER}.*${MOUNT_SCRIPT_NAME}" /etc/sudoers.d/* 2>/dev/null; then
         log_warn "Sudo configuration already exists, skipping..."
         return 0
     fi
 
     # Create sudoers entry
-    echo "${TARGET_USER} ALL=(ALL) NOPASSWD: /bin/bash -c /home/${TARGET_USER}/mount__data.sh" | sudo tee "${sudoers_file}" >/dev/null
+    echo "${TARGET_USER} ALL=(ALL) NOPASSWD: /bin/bash -c ${MOUNT_SCRIPT_PATH}" | sudo tee "${sudoers_file}" >/dev/null
     sudo chmod 0440 "${sudoers_file}"
 
     log_success "Sudo configuration created"

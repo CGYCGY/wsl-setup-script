@@ -31,10 +31,29 @@ BUN_INSTALL="${TARGET_HOME}/.bun"
 # Docker configuration
 DOCKER_GROUP="docker"
 
+# WSL configuration
+# Enable/disable automount of Windows drives (true/false)
+WSL_AUTOMOUNT_ENABLED="false"
+
+# fstab drive mounts (only used if WSL_AUTOMOUNT_ENABLED="false")
+# Format: "DRIVE: /mount/point drvfs defaults 0 0"
+FSTAB_MOUNTS=(
+    "C: /mnt/c drvfs defaults 0 0"
+    "D: /mnt/d drvfs defaults 0 0"
+)
+
 # VHDX mount configuration
 # IMPORTANT: Update this to your actual VHDX file location!
 VHDX_PATH="D:\WSL\your-vhdx-name.vhdx"
 VHDX_MOUNT_NAME="__data"
+
+# Mount point configuration
+CUSTOM_MOUNT_POINT="/mnt/${VHDX_MOUNT_NAME}"
+WSL_EXE_PATH="/mnt/c/Windows/System32/wsl.exe"
+
+# Mount script configuration
+MOUNT_SCRIPT_NAME="mount__data.sh"
+MOUNT_SCRIPT_PATH="${TARGET_HOME}/${MOUNT_SCRIPT_NAME}"
 
 #############################################
 # BACKUP CONFIGURATION
@@ -149,7 +168,10 @@ export SCRIPT_DIR TARGET_USER TARGET_HOME
 export FILES_DIR DOTFILES_DIR
 export CHROME_INSTALL_PATH NVM_DIR BUN_INSTALL
 export DOCKER_GROUP BACKUP_SUFFIX ENABLE_BACKUPS
+export WSL_AUTOMOUNT_ENABLED FSTAB_MOUNTS
 export VHDX_PATH VHDX_MOUNT_NAME
+export CUSTOM_MOUNT_POINT WSL_EXE_PATH
+export MOUNT_SCRIPT_NAME MOUNT_SCRIPT_PATH
 export LOG_FILE LOG_DEBUG LOG_INFO LOG_WARN LOG_ERROR
 export COLOR_RESET COLOR_RED COLOR_GREEN COLOR_YELLOW COLOR_BLUE COLOR_CYAN COLOR_BOLD
 export DISTRO_ID DISTRO_VERSION_CODENAME
